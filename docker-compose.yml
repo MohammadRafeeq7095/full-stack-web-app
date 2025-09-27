@@ -1,0 +1,31 @@
+iversion: '3.8'
+services:
+db:
+image: postgres:15
+environment:
+POSTGRES_USER: appuser
+POSTGRES_PASSWORD: apppassword
+POSTGRES_DB: appdb
+volumes:
+- ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+ports:
+- "5432:5432"
+
+
+backend:
+build: ./backend
+environment:
+DATABASE_URL: postgres://appuser:apppassword@db:5432/appdb
+depends_on:
+- db
+ports:
+- "3001:3001"
+
+
+frontend:
+build: ./frontend
+ports:
+- "8080:80"
+
+
+# Note: In production you'll use ALB + path-based routing: /api -> backend, / -> frontend

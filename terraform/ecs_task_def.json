@@ -1,0 +1,17 @@
+{
+"family": "backend-task",
+"networkMode": "awsvpc",
+"requiresCompatibilities": ["FARGATE"],
+"cpu": "256",
+"memory": "512",
+"containerDefinitions": [
+{
+"name": "backend",
+"image": "<ECR_BACKEND_IMAGE_URI>",
+"portMappings": [{"containerPort":3001,"hostPort":3001,"protocol":"tcp"}],
+"environment": [
+{"name":"DATABASE_URL","value":"postgres://appuser:apppassword@<RDS_ENDPOINT>:5432/appdb"}
+]
+}
+]
+}
